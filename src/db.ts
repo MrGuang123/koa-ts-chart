@@ -3,11 +3,12 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 16:58:35
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-02-29 23:43:40
+ * @LastEditTime: 2020-04-12 15:32:23
  */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const model = mongoose.model
+import { AddParam, ListParam } from './model'
 
 // 图片列表模型
 const chartListSchema = new Schema({
@@ -47,6 +48,8 @@ const chartListSchema = new Schema({
     type: Boolean,
     default: false
   }
+}, {
+  versionKey: false
 })
 
 // 图表详情模型
@@ -64,15 +67,15 @@ const ChartList = model('ChartList', chartListSchema)
 
 module.exports = {
   // 添加图表
-  async add(option, poster, name, description, chartType) {
-    if(!option) return
+  async add(param: AddParam) {
+    if(!param.option) return
 
     let chart = await ChartList.create({
-      option,
-      poster,
-      name,
-      description,
-      chartType
+      option: param.option,
+      poster: param.posterPath,
+      name: param.chartName,
+      description: param.description,
+      chartType: param.chartType
     })
     console.log('*************')
     console.log(chart)
@@ -101,16 +104,16 @@ module.exports = {
     })
   },
   // 获取图表列表
-  async getChartList(chartType, pageIndex, pageSize) {
+  async getChartList(param: ListParam) {
     let queryObj = {
       isDelete: false
     }
-    if(chartType) {
+    if(param.chartType && param.chartType !== 'all') {
       Object.assign(queryObj, {
-        chartType
+        chartType: param.chartType
       })
     }
-    return await ChartList.find(queryObj).sort({'created': -1})
+    return await ChartList.find(queryObj, { _id: 0 }).sort({'created': -1})
     // .skip((pageIndex - 1) * pageSize).limit(pageSize)
   },
   // 根据chartID获取chart

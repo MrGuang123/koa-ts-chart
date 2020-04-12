@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-26 09:57:19
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-03-01 12:19:11
+ * @LastEditTime: 2020-04-12 15:25:04
  */
 
 import Router from 'koa-router';
@@ -18,11 +18,12 @@ const serverPath = 'http://localhost:5656'
 
 // 添加图表
 router.post('/chartList/add', async (ctx, next) => {
-  let returnImgPath, img, option, chartName
+  let posterPath, img, option, chartName, chartType
   if(ctx.request.files && ctx.request.body) {
     img = ctx.request.files.img
     option = ctx.request.body.option
     chartName = ctx.request.body.chartName
+    chartType = ctx.request.body.chartType
 
     console.log(img)
     console.log(option)
@@ -30,7 +31,7 @@ router.post('/chartList/add', async (ctx, next) => {
 
     const name = 'img' + Date.now()
     let imgPath = `${path.resolve(__dirname, '../public/upload')}/${name}.jpeg`
-    returnImgPath = `${serverPath}/upload/${name}.jpeg`
+    posterPath = `${serverPath}/upload/${name}.jpeg`
     
     // 创建读写流，创建图片
     const reader = fs.createReadStream(img.path)
@@ -38,11 +39,18 @@ router.post('/chartList/add', async (ctx, next) => {
     reader.pipe(upStream)
   }
 
-  chartList.add(option, returnImgPath, chartName)
+  let param = {
+    option,
+    posterPath,
+    chartName,
+    chartType
+  }
+
+  chartList.add(param)
 
   ctx.body = {
     status: 1,
-    data: returnImgPath
+    data: posterPath
   }
 })
 
@@ -69,10 +77,21 @@ router.del('/chartList/:id', async (ctx, next) => {
 
 // 获取图表列表
 router.get('/chartList', async (ctx, next) => {
-  const lists = await chartList.getChartList()
+  console.log(ctx.query.type)
+  let chartType = ctx.query.type || 'all'
+  let pageIndex = ctx.query.pageIndex || 1
+  let pageSize = ctx.query.pageSize || 10
+
+  let param = {
+    chartType,
+    pageIndex,
+    pageSize
+  }
+  const lists = await chartList.getChartList(param)
   ctx.body = {
     status: 1,
     data: lists
+    // data: []
   }
 })
 

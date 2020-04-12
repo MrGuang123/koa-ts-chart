@@ -3,28 +3,29 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 20:47:53
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-02-26 15:02:09
+ * @LastEditTime: 2020-04-12 15:27:24
  */
 
- const chartList = require('./db')
+const chartList = require('./db')
+import { AddParam, ListParam } from './model'
 
- export default {
-  async add(option, poster, name = '默认图表', description = '', chartType = 'line') {
-    return chartList.add(option, poster, name, description, chartType)
-  },
-  async update(chartId, option) {
-    return chartList.update(chartId, option)
-  },
-  async delete(chartId) {
-    return chartList.delete(chartId)
-  },
-  async getChartList(chartType: string = '', pageIndex = 1, pageSize = 10) {
-    return chartList.getChartList(chartType, pageIndex, pageSize)
-  },
-  async getChartById(chartId) {
-    return chartList.getChartById(chartId)
-  },
-  async getDeletedList() {
-    return chartList.getDeletedList()
-  },
- }
+export default {
+async add(param: AddParam) {
+  return chartList.add(param)
+},
+async update(chartId, option) {
+  return chartList.update(chartId, option)
+},
+async delete(chartId) {
+  return chartList.delete(chartId)
+},
+async getChartList(param: ListParam) {
+  return chartList.getChartList(param)
+},
+async getChartById(chartId) {
+  return chartList.getChartById(chartId)
+},
+async getDeletedList() {
+  return chartList.getDeletedList()
+},
+}
