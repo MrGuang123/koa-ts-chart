@@ -1,0 +1,16 @@
+{
+  "apps": [
+    {
+      "name": "koa-ts-chart",
+      "script": "./dist/main.js",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "watch": true,
+      "ignore_watch": [
+        "upload"
+      ],
+      "max_memory_restart": "500M"
+    }
+  ]
+}
