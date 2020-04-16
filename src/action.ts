@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 20:47:53
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-12 15:27:24
+ * @LastEditTime: 2020-04-15 23:18:01
  */
 
 const chartList = require('./db')
@@ -13,10 +13,10 @@ export default {
 async add(param: AddParam) {
   return chartList.add(param)
 },
-async update(chartId, option) {
-  return chartList.update(chartId, option)
+async update(param) {
+  return chartList.update(param)
 },
-async delete(chartId) {
+async delete(chartId: string) {
   return chartList.delete(chartId)
 },
 async getChartList(param: ListParam) {

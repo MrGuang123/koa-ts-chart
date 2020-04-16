@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-26 09:57:19
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-12 15:25:04
+ * @LastEditTime: 2020-04-16 15:24:29
  */
 
 import Router from 'koa-router';
@@ -14,7 +14,8 @@ import path from 'path'
 
 const router = new Router();
 
-const serverPath = 'http://localhost:5656'
+const localServerPath = 'http://localhost:5656'
+const remoteServerPath = 'https://api.huahuazuimei.cn/'
 
 // 添加图表
 router.post('/chartList/add', async (ctx, next) => {
@@ -31,7 +32,7 @@ router.post('/chartList/add', async (ctx, next) => {
 
     const name = 'img' + Date.now()
     let imgPath = `${path.resolve(__dirname, '../public/upload')}/${name}.jpeg`
-    posterPath = `${serverPath}/upload/${name}.jpeg`
+    posterPath = `${localServerPath}/upload/${name}.jpeg`
     
     // 创建读写流，创建图片
     const reader = fs.createReadStream(img.path)
@@ -46,7 +47,7 @@ router.post('/chartList/add', async (ctx, next) => {
     chartType
   }
 
-  chartList.add(param)
+  await chartList.add(param)
 
   ctx.body = {
     status: 1,
@@ -56,22 +57,46 @@ router.post('/chartList/add', async (ctx, next) => {
 
 // 更新图表
 router.post('/chartList/update', async (ctx, next) => {
-  console.log(ctx.request.body)
-  const param = ctx.request.body
-  chartList.update(param.chartId, param.option)
-  ctx.body = {
-    status: 1,
-    data: 'success'
+  if(ctx.request.files && ctx.request.body) {
+    let img = ctx.request.files.img
+    let {option, chartName, chartType, chartId} = ctx.request.body
+
+    const name = 'img' + Date.now()
+    let imgPath = `${path.resolve(__dirname, '../public/upload')}/${name}.jpeg`
+    let posterPath = `${localServerPath}/upload/${name}.jpeg`
+    
+    // 创建读写流，创建图片
+    const reader = fs.createReadStream(img.path)
+    const upStream = fs.createWriteStream(imgPath)
+    reader.pipe(upStream)
+
+    let param = {
+      chartId,
+      option,
+      posterPath,
+      chartName,
+      chartType
+    }
+    await chartList.update(param)
+    ctx.body = {
+      status: 1,
+      data: 'success'
+    }
+  }else {
+    ctx.body = {
+      status: 0,
+      data: 'fail'
+    }
   }
 })
 
 // 删除图标
 router.del('/chartList/:id', async (ctx, next) => {
-  const { id } = ctx.params.id
+  const { id } = ctx.params
   await chartList.delete(id)
   ctx.body = {
     status: 1,
-    data: ''
+    data: 'success'
   }
 })
 

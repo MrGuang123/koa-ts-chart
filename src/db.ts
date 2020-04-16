@@ -3,11 +3,13 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 16:58:35
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-12 15:32:23
+ * @LastEditTime: 2020-04-15 23:40:19
  */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const model = mongoose.model
+const fs = require('fs')
+const path = require('path')
 import { AddParam, ListParam } from './model'
 
 // 图片列表模型
@@ -77,9 +79,9 @@ module.exports = {
       description: param.description,
       chartType: param.chartType
     })
-    console.log('*************')
-    console.log(chart)
-    console.log('*************')
+    // console.log('*************')
+    // console.log(chart)
+    // console.log('*************')
 
     await ChartList.updateOne({
       _id: chart._id
@@ -88,17 +90,37 @@ module.exports = {
     })
   },
   // 更新图表
-  async update(chartId, option) {
+  async update(param) {
+    console.log(param)
+    let { poster } = await ChartList.findOne({chartId: param.chartId})
+    let posterPathArr = poster.split('/')
+    let posterName = posterPathArr[posterPathArr.length - 1]
+    let delPath = `${path.resolve(__dirname, '../public/upload')}/${posterName}`
+
+    if(fs.existsSync(delPath)) {
+      fs.unlinkSync(delPath)
+    }else {
+      console.log('删除地址错误：'+delPath)
+    }
+    
     return await ChartList.updateOne({
-      _id: mongoose.Types.ObjectId(chartId)
+      // chartId: mongoose.Types.ObjectId(chartId)
+      chartId: param.chartId
     },{
-      option
+      option: param.option,
+      poster: param.posterPath,
+      name: param.chartName,
+      chartType: param.chartType,
+      lastModify: new Date().toISOString()
     })
   },
   // 删除图表
   async delete(chartId) {
+    let result = await ChartList.find({chartId: chartId})
+    console.log(chartId)
+    console.log(result)
     return await ChartList.update({
-      chartId
+      chartId: chartId
     }, {
       isDelete: true
     })
