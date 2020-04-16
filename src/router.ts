@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-26 09:57:19
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-16 15:24:29
+ * @LastEditTime: 2020-04-16 16:03:17
  */
 
 import Router from 'koa-router';
@@ -14,8 +14,10 @@ import path from 'path'
 
 const router = new Router();
 
+const isProd = false
 const localServerPath = 'http://localhost:5656'
-const remoteServerPath = 'https://api.huahuazuimei.cn/'
+const remoteServerPath = 'https://api.huahuazuimei.cn'
+const serverPath = isProd ? remoteServerPath : localServerPath
 
 // 添加图表
 router.post('/chartList/add', async (ctx, next) => {
@@ -32,7 +34,7 @@ router.post('/chartList/add', async (ctx, next) => {
 
     const name = 'img' + Date.now()
     let imgPath = `${path.resolve(__dirname, '../public/upload')}/${name}.jpeg`
-    posterPath = `${localServerPath}/upload/${name}.jpeg`
+    posterPath = `${serverPath}/upload/${name}.jpeg`
     
     // 创建读写流，创建图片
     const reader = fs.createReadStream(img.path)
@@ -63,7 +65,7 @@ router.post('/chartList/update', async (ctx, next) => {
 
     const name = 'img' + Date.now()
     let imgPath = `${path.resolve(__dirname, '../public/upload')}/${name}.jpeg`
-    let posterPath = `${localServerPath}/upload/${name}.jpeg`
+    let posterPath = `${serverPath}/upload/${name}.jpeg`
     
     // 创建读写流，创建图片
     const reader = fs.createReadStream(img.path)
