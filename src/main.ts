@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-24 17:01:15
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-16 19:24:44
+ * @LastEditTime: 2020-04-16 21:26:07
  */
 import Koa from 'koa';
 import koaBody from 'koa-body'
@@ -29,7 +29,8 @@ app.use(koaBody({
 }))
 
 app.use(cors({
-  origin: '*'
+  origin: '*',
+  allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
 }))
 
 app.use(KoaStatic(path.resolve(__dirname, '../public')))
