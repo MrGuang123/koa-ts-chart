@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 16:58:35
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-15 23:40:19
+ * @LastEditTime: 2020-04-17 14:23:55
  */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -107,6 +107,7 @@ module.exports = {
       // chartId: mongoose.Types.ObjectId(chartId)
       chartId: param.chartId
     },{
+      chartId: param.chartId,
       option: param.option,
       poster: param.posterPath,
       name: param.chartName,
