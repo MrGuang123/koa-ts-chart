@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-24 17:01:15
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-16 21:51:59
+ * @LastEditTime: 2020-04-17 10:38:36
  */
 import Koa from 'koa';
 import koaBody from 'koa-body'
@@ -34,9 +34,9 @@ app.use(koaBody({
 // }))
 
 app.use(async (ctx, next)=> {
-  ctx.set('Access-Control-Allow-Origin', '*');
-  ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-  ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  // ctx.set('Access-Control-Allow-Origin', '*');
+  // ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
+  // ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
   if (ctx.method == 'OPTIONS') {
     ctx.body = 200; 
   } else {
@@ -62,9 +62,19 @@ app.use(async (ctx, next) => {
   }
 })
 
+app.use(async (ctx, next) => {
+  console.log(ctx.response.header['access-control-allow-origin'])
+  if(!ctx.response.header['access-control-allow-origin']) {
+    ctx.set('Access-Control-Allow-Origin', '*');
+    ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
+    ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  }
+  await next()
+})
 
 app.use(router.routes())
 app.use(router.allowedMethods())
+
 
 app.listen(5656)
 console.log('server is start at 5656')
