@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-24 17:01:15
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-17 10:38:36
+ * @LastEditTime: 2020-04-17 10:51:39
  */
 import Koa from 'koa';
 import koaBody from 'koa-body'
@@ -64,11 +64,11 @@ app.use(async (ctx, next) => {
 
 app.use(async (ctx, next) => {
   console.log(ctx.response.header['access-control-allow-origin'])
-  if(!ctx.response.header['access-control-allow-origin']) {
-    ctx.set('Access-Control-Allow-Origin', '*');
-    ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
-    ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-  }
+  // if(!ctx.response.header['access-control-allow-origin']) {
+  //   ctx.set('Access-Control-Allow-Origin', '*');
+  //   ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
+  //   ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  // }
   await next()
 })
 
