@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-26 09:57:19
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-16 21:52:54
+ * @LastEditTime: 2020-04-17 10:42:42
  */
 
 import Router from 'koa-router';
@@ -21,9 +21,9 @@ const serverPath = isProd ? remoteServerPath : localServerPath
 
 // 添加图表
 router.post('/chartList/add', async (ctx, next) => {
-  if(ctx.method == 'OPTIONS') {
-    return
-  }
+  // if(ctx.method == 'OPTIONS') {
+  //   return
+  // }
 
   let posterPath, img, option, chartName, chartType
   if(ctx.request.files && ctx.request.body) {
@@ -63,9 +63,9 @@ router.post('/chartList/add', async (ctx, next) => {
 
 // 更新图表
 router.post('/chartList/update', async (ctx, next) => {
-  if(ctx.method == 'OPTIONS') {
-    return
-  }
+  // if(ctx.method == 'OPTIONS') {
+  //   return
+  // }
 
   if(ctx.request.files && ctx.request.body) {
     let img = ctx.request.files.img
