@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 16:58:35
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-22 13:52:38
+ * @LastEditTime: 2020-04-22 14:09:04
  */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -51,7 +51,8 @@ const chartListSchema = new Schema({
     default: false
   }
 }, {
-  versionKey: false
+  _id: true,
+  versionKey: 'v1.0.0'
 })
 
 // 图表详情模型
