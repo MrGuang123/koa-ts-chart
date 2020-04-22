@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 16:58:35
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-22 14:49:11
+ * @LastEditTime: 2020-04-22 15:02:11
  */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -14,13 +14,13 @@ import { AddParam, ListParam } from './model'
 
 // 图片列表模型
 const chartListSchema = new Schema({
-  chartId: {
-    type: Schema.Types.ObjectId,
-    // 是否创建索引
-    index: true,
-    // 是否创建唯一索引
-    unique: true
-  },
+  // chartId: {
+  //   type: Schema.Types.ObjectId,
+  //   // 是否创建索引
+  //   index: true,
+  //   // 是否创建唯一索引
+  //   unique: true
+  // },
   created: {
     type: Date,
     default: Date.now
@@ -94,9 +94,9 @@ module.exports = {
     
     return await ChartList.updateOne({
       // chartId: mongoose.Types.ObjectId(chartId)
-      chartId: param.chartId
+      _id: mongoose.Types.ObjectId(param.chartId)
     },{
-      chartId: param.chartId,
+      // chartId: param.chartId,
       option: param.option,
       poster: param.posterPath,
       name: param.chartName,
@@ -106,11 +106,11 @@ module.exports = {
   },
   // 删除图表
   async delete(chartId) {
-    let result = await ChartList.find({chartId: chartId})
+    let result = await ChartList.find({_id: mongoose.Types.ObjectId(chartId)})
     console.log(chartId)
     console.log(result)
     return await ChartList.updateOne({
-      chartId: chartId
+      _id: chartId
     }, {
       isDelete: true
     })
@@ -131,7 +131,7 @@ module.exports = {
   // 根据chartID获取chart
   async getChartById(chartId) {
     return await ChartList.findOne({
-      chartId,
+      _id: mongoose.Types.ObjectId(chartId),
       isDelete: false
     })
   },
