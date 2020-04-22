@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 16:58:35
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-17 14:23:55
+ * @LastEditTime: 2020-04-22 13:44:34
  */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -120,7 +120,7 @@ module.exports = {
     let result = await ChartList.find({chartId: chartId})
     console.log(chartId)
     console.log(result)
-    return await ChartList.update({
+    return await ChartList.updateOne({
       chartId: chartId
     }, {
       isDelete: true
