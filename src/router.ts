@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-26 09:57:19
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-17 10:42:42
+ * @LastEditTime: 2020-04-22 14:48:01
  */
 
 import Router from 'koa-router';
@@ -21,16 +21,9 @@ const serverPath = isProd ? remoteServerPath : localServerPath
 
 // 添加图表
 router.post('/chartList/add', async (ctx, next) => {
-  // if(ctx.method == 'OPTIONS') {
-  //   return
-  // }
-
-  let posterPath, img, option, chartName, chartType
   if(ctx.request.files && ctx.request.body) {
-    img = ctx.request.files.img
-    option = ctx.request.body.option
-    chartName = ctx.request.body.chartName
-    chartType = ctx.request.body.chartType
+    let img = ctx.request.files.img
+    let { option, chartName, chartType } = ctx.request.body
 
     console.log(img)
     console.log(option)
@@ -38,26 +31,33 @@ router.post('/chartList/add', async (ctx, next) => {
 
     const name = 'img' + Date.now()
     let imgPath = `${path.resolve(__dirname, '../public/upload')}/${name}.jpeg`
-    posterPath = `${serverPath}/upload/${name}.jpeg`
+    let posterPath = `${serverPath}/upload/${name}.jpeg`
     
     // 创建读写流，创建图片
     const reader = fs.createReadStream(img.path)
     const upStream = fs.createWriteStream(imgPath)
     reader.pipe(upStream)
-  }
 
-  let param = {
-    option,
-    posterPath,
-    chartName,
-    chartType
-  }
-
-  await chartList.add(param)
-
-  ctx.body = {
-    status: 1,
-    data: posterPath
+    let param = {
+      option,
+      posterPath,
+      chartName,
+      chartType
+    }
+  
+    console.log('add start')
+    await chartList.add(param)
+    console.log('add complete')
+  
+    ctx.body = {
+      status: 1,
+      data: posterPath
+    }
+  }else {
+    ctx.body = {
+      status: 0,
+      data: 'fail'
+    }
   }
 })
 
@@ -88,6 +88,7 @@ router.post('/chartList/update', async (ctx, next) => {
       chartType
     }
     await chartList.update(param)
+
     ctx.body = {
       status: 1,
       data: 'success'
