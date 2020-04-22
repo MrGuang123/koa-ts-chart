@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 16:58:35
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-22 14:09:04
+ * @LastEditTime: 2020-04-22 14:21:54
  */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -80,9 +80,9 @@ module.exports = {
       description: param.description,
       chartType: param.chartType
     })
-    // console.log('*************')
-    // console.log(chart)
-    // console.log('*************')
+    console.log('*************')
+    console.log(chart)
+    console.log('*************')
 
     // await ChartList.updateOne({
     //   _id: chart._id
@@ -137,7 +137,7 @@ module.exports = {
         chartType: param.chartType
       })
     }
-    return await ChartList.find(queryObj, { _id: 0 }).sort({'created': -1})
+    return await ChartList.find(queryObj).sort({'created': -1})
     // .skip((pageIndex - 1) * pageSize).limit(pageSize)
   },
   // 根据chartID获取chart
