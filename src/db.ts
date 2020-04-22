@@ -3,7 +3,7 @@
  * @Autor: yantingguang@tusdao.com
  * @Date: 2020-02-25 16:58:35
  * @LastEditors: yantingguang@tusdao.com
- * @LastEditTime: 2020-04-22 13:44:34
+ * @LastEditTime: 2020-04-22 13:52:38
  */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -83,11 +83,11 @@ module.exports = {
     // console.log(chart)
     // console.log('*************')
 
-    await ChartList.updateOne({
-      _id: chart._id
-    }, {
-      chartId: chart._id
-    })
+    // await ChartList.updateOne({
+    //   _id: chart._id
+    // }, {
+    //   chartId: chart._id
+    // })
   },
   // 更新图表
   async update(param) {
